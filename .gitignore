@@ -1,0 +1,12 @@
+*.pyc
+WebSite/utilizadores/__pycache__/views.cpython-36.pyc
+media/events/test*
+media/test*
+django
+requirements
+sh_scripts/
+.gitlab-ci.yml
+*/*.pyc
+.idea/
+*/migrations/*
+static/*
