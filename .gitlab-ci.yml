@@ -36,6 +36,6 @@ heroku:
     - apt-get -y upgrade
     - apt-get install -y ruby ruby-dev rubygems-integration
     - gem install dpl
-    - dpl --provider=heroku --app=maltacompanhia --api-key=6e2b5638-8aa3-40cd-b8ac-b7f2f1ed6943
+    - dpl --provider=heroku --app=maltacompanhia --api-key=[REDACTED]
   only:
     - master
