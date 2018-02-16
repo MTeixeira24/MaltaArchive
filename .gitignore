@@ -5,7 +5,6 @@ media/test*
 django
 requirements
 sh_scripts/
-.gitlab-ci.yml
 */*.pyc
 .idea/
 */migrations/*

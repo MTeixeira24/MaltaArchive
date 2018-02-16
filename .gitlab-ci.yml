@@ -1,0 +1,41 @@
+image: python:3
+
+stages:
+  - test
+  - deploy
+
+variables:
+  MYSQL_DATABASE: MaltaC
+  DEBIAN_FRONTEND: noninteractive
+  #PIPELINE: pipeline
+
+all_tests:
+  stage: test
+  script:
+    - apt-get -y update
+    - apt-get -y upgrade
+    - apt-get install -y mysql-server mysql-client libmysqlclient-dev libmysqld-dev
+    - pip3 install -r requirements.txt
+    - /etc/init.d/mysql start
+    - mysql -uroot -e 'CREATE DATABASE MaltaC CHARACTER SET UTF8;'
+    - mysql -uroot -e 'CREATE USER mysqlDBUser@localhost IDENTIFIED BY "maltaDBpassword";'
+    - mysql -uroot -e 'GRANT ALL PRIVILEGES ON MaltaC.* TO mysqlDBUser@localhost;'
+    - mysql -uroot -e 'GRANT ALL PRIVILEGES ON test_MaltaC.* TO mysqlDBUser@localhost;'
+    - mysql -uroot -e 'FLUSH PRIVILEGES;'
+    - python manage.py makemigrations
+    - python manage.py migrate
+    - python manage.py test
+  when: on_success
+  only:
+    - master
+
+heroku:
+  stage: deploy
+  script:
+    - apt-get -y update
+    - apt-get -y upgrade
+    - apt-get install -y ruby ruby-dev rubygems-integration
+    - gem install dpl
+    - dpl --provider=heroku --app=maltacompanhia --api-key=6e2b5638-8aa3-40cd-b8ac-b7f2f1ed6943
+  only:
+    - master
